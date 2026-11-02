@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --text-primary: #0F172A; /* Slate 900: > 12:1 contrast against #FFF */
+    --text-secondary: #334155; /* Slate 700: > 7:1 contrast against #FFF */
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F8FAFC; /* Slate 50 */
+    --focus-ring: #2563EB; /* Blue 600 */
+  }
+
+  body {
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.625;
+  }
+
+  /* High contrast accessible focus indicators across all interactive elements */
+  *:focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 3px #ffffff, 0 0 0 6px #2563eb !important;
+  }
+}
+
+/* Skip-to-content helper for screen readers & keyboard navigation */
+.skip-link {
+  position: absolute;
+  top: -9999px;
+  left: 1rem;
+  z-index: 100;
+  padding: 0.75rem 1.5rem;
+  background-color: #1e3a8a;
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+  transition: top 0.2s ease-in-out;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+

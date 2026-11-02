@@ -1,0 +1,45 @@
+{
+  "name": "omniway",
+  "version": "1.0.0",
+  "description": "OmniWay - Crowdsourced Accessibility Directory with Time-Audited Verification",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "scripts": {
+    "dev": "concurrently -n \"server,client\" -c \"cyan,magenta\" \"npm run dev --workspace=server\" \"npm run dev --workspace=client\"",
+    "dev:server": "npm run dev --workspace=server",
+    "dev:client": "npm run dev --workspace=client",
+    "build": "npm run build --workspace=client",
+    "start": "npm run start --workspace=server",
+    "seed": "npm run seed --workspace=server",
+    "test": "npm run test --workspace=server"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "helmet": "^8.0.0",
+    "mongoose": "^8.9.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "keywords": [
+    "accessibility",
+    "wcag",
+    "a11y",
+    "crowdsourcing",
+    "express",
+    "react",
+    "mongodb",
+    "vercel"
+  ],
+  "author": "AccessiblePlace Notes Team",
+  "license": "MIT"
+}
