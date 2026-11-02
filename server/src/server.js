@@ -40,8 +40,15 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (e.g. curl, tests, mobile)
-      if (!origin || allowedOrigins.includes(origin)) {
+      // Allow requests with no origin (e.g. same-origin, curl, tests, mobile)
+      // and allow any Vercel preview or production deployments (*.vercel.app)
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
+        origin.includes('localhost') ||
+        origin.includes('127.0.0.1')
+      ) {
         return callback(null, true);
       }
       return callback(new Error(`Origin ${origin} not allowed by CORS`));
