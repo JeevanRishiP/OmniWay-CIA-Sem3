@@ -35,7 +35,7 @@ export function AddPlaceForm() {
   const [city, setCity] = useState('');
   const [state, setState] = useState('');
   const [postalCode, setPostalCode] = useState('');
-  const [country, setCountry] = useState('USA');
+  const [country, setCountry] = useState('India');
 
   // Initial Features State
   const [features, setFeatures] = useState({
@@ -183,7 +183,7 @@ export function AddPlaceForm() {
               aria-describedby={errors.name ? 'place-name-err' : undefined}
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g., Downtown Civic Library, Blue Fin Seafood..."
+              placeholder="e.g., Toit Indiranagar, Manipal Hospital, Orion Mall..."
               className="w-full bg-slate-50 border-2 border-slate-300 rounded-xl px-4 py-3 text-base font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-blue-600 focus-visible:ring-4 focus-visible:ring-blue-600 focus-visible:outline-none"
             />
             {errors.name && (
@@ -240,7 +240,7 @@ export function AddPlaceForm() {
               required
               value={street}
               onChange={(e) => setStreet(e.target.value)}
-              placeholder="e.g., 1420 Market Street, Suite 400"
+              placeholder="e.g., 298, 100 Feet Road, Indiranagar"
               className="w-full bg-slate-50 border-2 border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-blue-600 focus-visible:ring-4 focus-visible:ring-blue-600 focus-visible:outline-none"
             />
             {errors.street && <p className="mt-1 text-xs font-bold text-rose-600">{errors.street}</p>}
@@ -257,7 +257,7 @@ export function AddPlaceForm() {
               required
               value={city}
               onChange={(e) => setCity(e.target.value)}
-              placeholder="e.g., San Francisco"
+              placeholder="e.g., Bengaluru"
               className="w-full bg-slate-50 border-2 border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-blue-600 focus-visible:ring-4 focus-visible:ring-blue-600 focus-visible:outline-none"
             />
             {errors.city && <p className="mt-1 text-xs font-bold text-rose-600">{errors.city}</p>}
@@ -266,7 +266,7 @@ export function AddPlaceForm() {
           {/* State */}
           <div>
             <label htmlFor="place-state" className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
-              State / Province <span className="text-rose-600">*</span>
+              State <span className="text-rose-600">*</span>
             </label>
             <input
               id="place-state"
@@ -274,7 +274,7 @@ export function AddPlaceForm() {
               required
               value={state}
               onChange={(e) => setState(e.target.value)}
-              placeholder="e.g., CA"
+              placeholder="e.g., Karnataka"
               className="w-full bg-slate-50 border-2 border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-blue-600 focus-visible:ring-4 focus-visible:ring-blue-600 focus-visible:outline-none"
             />
             {errors.state && <p className="mt-1 text-xs font-bold text-rose-600">{errors.state}</p>}
@@ -283,7 +283,7 @@ export function AddPlaceForm() {
           {/* Postal Code */}
           <div>
             <label htmlFor="place-postalCode" className="block text-xs font-bold text-slate-900 uppercase tracking-wider mb-1.5">
-              Postal / Zip Code <span className="text-rose-600">*</span>
+              PIN / Postal Code <span className="text-rose-600">*</span>
             </label>
             <input
               id="place-postalCode"
@@ -291,7 +291,7 @@ export function AddPlaceForm() {
               required
               value={postalCode}
               onChange={(e) => setPostalCode(e.target.value)}
-              placeholder="e.g., 94103"
+              placeholder="e.g., 560038"
               className="w-full bg-slate-50 border-2 border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-blue-600 focus-visible:ring-4 focus-visible:ring-blue-600 focus-visible:outline-none"
             />
             {errors.postalCode && <p className="mt-1 text-xs font-bold text-rose-600">{errors.postalCode}</p>}
@@ -307,7 +307,7 @@ export function AddPlaceForm() {
               type="text"
               value={country}
               onChange={(e) => setCountry(e.target.value)}
-              placeholder="USA"
+              placeholder="India"
               className="w-full bg-slate-50 border-2 border-slate-300 rounded-xl px-4 py-3 text-sm font-semibold text-slate-900 placeholder:text-slate-400 focus:bg-white focus:border-blue-600 focus-visible:ring-4 focus-visible:ring-blue-600 focus-visible:outline-none"
             />
           </div>

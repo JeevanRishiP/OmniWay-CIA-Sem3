@@ -33,7 +33,7 @@ export const createPlaceSchema = z.object({
     city: z.string({ required_error: 'City is required' }).trim().min(1, 'City cannot be empty'),
     state: z.string({ required_error: 'State is required' }).trim().min(1, 'State cannot be empty'),
     postalCode: z.string({ required_error: 'Postal code is required' }).trim().min(1, 'Postal code cannot be empty'),
-    country: z.string().trim().default('USA').optional()
+    country: z.string().trim().default('India').optional()
   }),
   location: z
     .object({

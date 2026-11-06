@@ -55,7 +55,7 @@ const PlaceSchema = new mongoose.Schema(
       city: { type: String, required: true, trim: true, index: true },
       state: { type: String, required: true, trim: true },
       postalCode: { type: String, required: true, trim: true },
-      country: { type: String, default: 'USA' }
+      country: { type: String, default: 'India' }
     },
     location: {
       type: {
