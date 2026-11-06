@@ -76,6 +76,14 @@ export async function getVerificationsByPlaceId(req, res, next) {
     const { id } = req.params;
     const { page = 1, limit = 20, feature } = req.query;
 
+    if (mongoose.connection.readyState !== 1 && process.env.MONGODB_URI) {
+      try {
+        await connectDB(process.env.MONGODB_URI);
+      } catch (err) {
+        console.error('[getVerificationsByPlaceId] DB connection error:', err.message);
+      }
+    }
+
     if (mongoose.connection.readyState !== 1) {
       return res.status(200).json({
         notes: [],

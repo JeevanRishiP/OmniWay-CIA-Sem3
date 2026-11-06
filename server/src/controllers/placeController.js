@@ -10,7 +10,16 @@ import { subDays } from 'date-fns';
  */
 export async function getPlaces(req, res, next) {
   try {
-    // If database is not connected yet, return clean empty list without buffering timeout
+    // Ensure database connection before querying
+    if (mongoose.connection.readyState !== 1 && process.env.MONGODB_URI) {
+      try {
+        await connectDB(process.env.MONGODB_URI);
+      } catch (err) {
+        console.error('[getPlaces] DB connection error:', err.message);
+      }
+    }
+
+    // If database is still not connected, return clean empty list
     if (mongoose.connection.readyState !== 1) {
       return res.status(200).json({
         places: [],
