@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Place } from '../models/Place.js';
 import { VerificationNote } from '../models/VerificationNote.js';
 import { AppError } from '../middleware/errorHandler.js';
@@ -9,6 +10,14 @@ import { subDays } from 'date-fns';
  */
 export async function getPlaces(req, res, next) {
   try {
+    // If database is not connected yet, return clean empty list without buffering timeout
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(200).json({
+        places: [],
+        pagination: { total: 0, page: 1, limit: 12, totalPages: 1 },
+        notice: 'Database is not yet connected. Configure MONGODB_URI in environment settings.'
+      });
+    }
     const {
       search,
       category,

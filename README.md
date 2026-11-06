@@ -203,6 +203,8 @@ npm run dev
 - **Backend API:** [http://localhost:5001](http://localhost:5001)
 - **API Health Check:** [http://localhost:5001/api/health](http://localhost:5001/api/health)
 
+> **Coexistence Guarantee:** Configured on dedicated ports (`5001`, `5173`) and MongoDB (`27017`) to run simultaneously with your other local projects (AI WhatsApp Sales Agent on 3001/3002/8080, DineFlow on 3000/3003/3004, and StuNet on 3010/3011) without any port, database, or container conflicts.
+
 ---
 
 ## 6. WCAG 2.1 AA / AAA Accessibility Highlights

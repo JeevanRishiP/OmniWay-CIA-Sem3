@@ -76,6 +76,13 @@ export async function getVerificationsByPlaceId(req, res, next) {
     const { id } = req.params;
     const { page = 1, limit = 20, feature } = req.query;
 
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(200).json({
+        notes: [],
+        pagination: { total: 0, page: 1, limit: 20, totalPages: 1 }
+      });
+    }
+
     const placeExists = await Place.exists({ _id: id });
     if (!placeExists) {
       throw new AppError(
