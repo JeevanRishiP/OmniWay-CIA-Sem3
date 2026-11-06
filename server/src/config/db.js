@@ -1,68 +1,62 @@
 import mongoose from 'mongoose';
 
-const MAX_RETRIES = process.env.NODE_ENV === 'production' ? 5 : 2;
-const INITIAL_RETRY_DELAY_MS = 1000;
+let cachedPromise = null;
 let memoryServerInstance = null;
 
 /**
- * Connect to MongoDB with connection pooling and retry logic
- * Automatically falls back to an embedded in-memory MongoDB instance in development if local mongod is not running.
+ * Connect to MongoDB with cached promise for serverless environments.
+ * In development, falls back to embedded in-memory MongoDB if URI is not reachable.
  * @param {string} [uri] - MongoDB URI (defaults to process.env.MONGODB_URI)
  * @returns {Promise<typeof mongoose>}
  */
 export async function connectDB(uri = process.env.MONGODB_URI) {
-  const options = {
-    maxPoolSize: 10,
-    minPoolSize: 2,
-    serverSelectionTimeoutMS: 3000,
-    socketTimeoutMS: 45000,
-    family: 4
-  };
-
-  // If already connected, return existing connection
+  // If already connected, reuse connection immediately
   if (mongoose.connection.readyState === 1) {
     return mongoose;
   }
 
-  let targetUri = uri;
+  const options = {
+    maxPoolSize: 10,
+    serverSelectionTimeoutMS: 5000,
+    socketTimeoutMS: 45000
+    // Note: Do NOT set family: 4, as AWS Lambda / Vercel requires dual-stack DNS resolution for Atlas SRV
+  };
 
-  // Try configured URI first
-  if (targetUri) {
-    let attempt = 0;
-    while (attempt < MAX_RETRIES) {
-      try {
-        attempt++;
-        const conn = await mongoose.connect(targetUri, options);
+  if (uri) {
+    if (!cachedPromise) {
+      cachedPromise = mongoose.connect(uri, options).then((conn) => {
         console.log(`[Database] MongoDB connected successfully: ${conn.connection.host}`);
         return conn;
-      } catch (err) {
-        console.warn(`[Database] Connection attempt ${attempt} to '${targetUri}' failed: ${err.message}`);
-        if (attempt >= MAX_RETRIES) {
-          break;
-        }
-        const delay = INITIAL_RETRY_DELAY_MS * Math.pow(2, attempt - 1);
-        await new Promise((res) => setTimeout(res, delay));
+      });
+    }
+
+    try {
+      return await cachedPromise;
+    } catch (err) {
+      cachedPromise = null;
+      console.error(`[Database] Connection to '${uri}' failed: ${err.message}`);
+      if (process.env.NODE_ENV === 'production') {
+        throw err;
       }
     }
   }
 
-  // If in production and failed, throw error
-  if (process.env.NODE_ENV === 'production') {
-    throw new Error(`Failed to connect to MongoDB at '${targetUri}' after ${MAX_RETRIES} attempts.`);
+  // Development Fallback: Embedded In-Memory MongoDB
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('[Database] Initializing embedded in-memory database for local development...');
+    try {
+      const { MongoMemoryServer } = await import('mongodb-memory-server');
+      memoryServerInstance = await MongoMemoryServer.create();
+      const memUri = memoryServerInstance.getUri();
+      const conn = await mongoose.connect(memUri, options);
+      console.log(`[Database] Embedded in-memory MongoDB started and connected successfully! (${memUri})`);
+      return conn;
+    } catch (memErr) {
+      throw new Error(`Failed to initialize development in-memory MongoDB: ${memErr.message}`);
+    }
   }
 
-  // Development Fallback: In-Memory MongoDB Server
-  console.log('[Database] Local MongoDB not detected. Initializing embedded in-memory database for seamless local development...');
-  try {
-    const { MongoMemoryServer } = await import('mongodb-memory-server');
-    memoryServerInstance = await MongoMemoryServer.create();
-    targetUri = memoryServerInstance.getUri();
-    const conn = await mongoose.connect(targetUri, options);
-    console.log(`[Database] Embedded in-memory MongoDB started and connected successfully! (${targetUri})`);
-    return conn;
-  } catch (memErr) {
-    throw new Error(`Failed to initialize development in-memory MongoDB: ${memErr.message}`);
-  }
+  throw new Error('MONGODB_URI is required in production environment.');
 }
 
 /**
@@ -71,6 +65,7 @@ export async function connectDB(uri = process.env.MONGODB_URI) {
 export async function disconnectDB() {
   if (mongoose.connection.readyState !== 0) {
     await mongoose.disconnect();
+    cachedPromise = null;
     console.log('[Database] MongoDB disconnected cleanly.');
   }
   if (memoryServerInstance) {
@@ -81,6 +76,7 @@ export async function disconnectDB() {
 }
 
 mongoose.connection.on('disconnected', () => {
+  cachedPromise = null;
   console.warn('[Database] MongoDB connection lost.');
 });
 
