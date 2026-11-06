@@ -2,9 +2,18 @@
 
 > **Universal Crowdsourced Physical Accessibility Directory with Time-Audited Verification**
 
+[![Live Deployment](https://img.shields.io/badge/Vercel-omniway.vercel.app-blue?style=flat&logo=vercel)](https://omniway.vercel.app)
+[![Node.js](https://img.shields.io/badge/Node.js-v20+-green.svg)](https://nodejs.org)
+[![MongoDB](https://img.shields.io/badge/MongoDB-Atlas%20v8-brightgreen.svg)](https://www.mongodb.com/atlas)
+[![Accessibility](https://img.shields.io/badge/WCAG-2.1%20AA%20%2F%20AAA-success)](https://www.w3.org/WAI/standards-guidelines/wcag/)
+
 **OmniWay** tracks crowd-verified physical accessibility features (wheelchair ramps, elevators/lifts, accessible restrooms, and step-free entrances) with a central differentiator: **explicitly tracking, calculating, and highlighting the elapsed time since each individual accessibility feature was last verified.**
 
-Built strictly to **WCAG 2.1 Level AA** standards with AAA text contrast tokens, robust input validation, resilient error handling, and keyboard-first accessibility.
+Built strictly to **WCAG 2.1 Level AA** standards with AAA text contrast tokens, robust input validation, resilient error handling, and keyboard-first accessibility. Pre-seeded with 28 authentic venues across Bengaluru, Karnataka, India.
+
+- **Live Web Application:** [https://omniway.vercel.app](https://omniway.vercel.app)
+- **Live API Endpoint:** [https://omniway.vercel.app/api/places](https://omniway.vercel.app/api/places)
+- **GitHub Repository:** [https://github.com/JeevanRishiP/OmniWay-CIA-Sem3.git](https://github.com/JeevanRishiP/OmniWay-CIA-Sem3.git)
 
 ---
 
@@ -60,7 +69,7 @@ Physical accessibility features deteriorate, break, or face obstruction over tim
 ## 3. Repository Structure
 
 ```text
-accessible-place-notes/
+OmniWay/
 ├── package.json                 # Workspaces config (client, server) & concurrently runner
 ├── .gitignore
 ├── README.md
